@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tisha B'Av Countdown - תשעה באב תשע"ה</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Heebo', Arial, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(45deg, #1a0000, #4a0000, #1a0000);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding-top: 40px;
+            color: #fff;
+            position: relative;
+        }
+        
+        /* Fire Animation Background */
+        .fire-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .flame {
+            position: absolute;
+            bottom: -50px;
+            width: 20px;
+            height: 100px;
+            background: linear-gradient(to top, 
+                #ff6b35 0%, 
+                #f7931e 25%, 
+                #ffd700 50%, 
+                #ff4500 75%, 
+                transparent 100%);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: flicker 1.5s infinite alternate;
+            opacity: 0.8;
+        }
+        
+        @keyframes flicker {
+            0% { 
+                transform: rotate(-2deg) scale(1);
+                opacity: 0.8;
+            }
+            50% { 
+                transform: rotate(2deg) scale(1.1);
+                opacity: 1;
+            }
+            100% { 
+                transform: rotate(-1deg) scale(0.9);
+                opacity: 0.7;
+            }
+        }
+        
+        /* Main Content */
+        .countdown-container {
+            z-index: 10;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 107, 53, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        .title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            background: linear-gradient(45deg, #ffd700, #ff6b35);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hebrew-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #ffd700;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+        
+        .psalm-text {
+            font-size: 1.4rem;
+            margin-bottom: 30px;
+            color: #ff9f5c;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            font-style: italic;
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .time-unit {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            padding: 20px;
+            border-radius: 15px;
+            min-width: 120px;
+            box-shadow: 0 8px 16px rgba(255, 107, 53, 0.3);
+            border: 2px solid rgba(255, 215, 0, 0.2);
+        }
+        
+        .time-number {
+            font-size: 3rem;
+            font-weight: 700;
+            display: block;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .time-label {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 8px;
+            opacity: 0.9;
+        }
+        
+        .progress-container {
+            margin-top: 40px;
+        }
+        
+        .progress-label {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid rgba(255, 107, 53, 0.3);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b35, #ffd700, #ff6b35);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+            transition: width 1s ease;
+            border-radius: 8px;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        .progress-text {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+        
+        .end-time {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            opacity: 0.8;
+            color: #ffd700;
+        }
+        
+        .footer {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            color: #ccc;
+        }
+        
+        .footer a {
+            color: #ff9f5c;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer a:hover {
+            color: #ffd700;
+            text-decoration: underline;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 20px;
+            }
+            
+            .countdown-container {
+                padding: 20px;
+                margin: 20px;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .hebrew-title {
+                font-size: 1.4rem;
+            }
+            
+            .psalm-text {
+                font-size: 1.1rem;
+            }
+            
+            .countdown {
+                gap: 10px;
+            }
+            
+            .time-unit {
+                min-width: 70px;
+                padding: 12px 8px;
+            }
+            
+            .time-number {
+                font-size: 1.8rem;
+            }
+            
+            .time-label {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="fire-container" id="fireContainer"></div>
+    
+    <div class="countdown-container">
+        <h1 class="title">Tisha B'Av Fast</h1>
+        <h2 class="hebrew-title">תשעה באב תשע"ה</h2>
+        <div class="psalm-text">אם אשכחך ירושלים תשכח ימיני</div>
+        
+        <div class="countdown">
+            <div class="time-unit">
+                <span class="time-number" id="hours">--</span>
+                <span class="time-label">Hours</span>
+            </div>
+            <div class="time-unit">
+                <span class="time-number" id="minutes">--</span>
+                <span class="time-label">Minutes</span>
+            </div>
+            <div class="time-unit">
+                <span class="time-number" id="seconds">--</span>
+                <span class="time-label">Seconds</span>
+            </div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-label">Fast Progress</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">0%</div>
+        </div>
+        
+        <div class="end-time">Fast ends at 9:19 PM EST</div>
+    </div>
+    
+    <div class="footer">
+        Powered by <a href="https://solveitsolutions.ca" target="_blank">SolveIT</a>
+    </div>
+
+    <script>
+        // Create fire animation
+        function createFlames() {
+            const container = document.getElementById('fireContainer');
+            const numFlames = 50;
+            
+            for (let i = 0; i < numFlames; i++) {
+                const flame = document.createElement('div');
+                flame.className = 'flame';
+                flame.style.left = Math.random() * 100 + '%';
+                flame.style.animationDelay = Math.random() * 2 + 's';
+                flame.style.animationDuration = (1 + Math.random()) + 's';
+                flame.style.height = (80 + Math.random() * 120) + 'px';
+                flame.style.width = (15 + Math.random() * 25) + 'px';
+                container.appendChild(flame);
+            }
+        }
+        
+        // Countdown logic
+        function updateCountdown() {
+            const now = new Date();
+            
+            // Fast started August 2, 2025 at 8:24 PM EST
+            const fastStart = new Date('2025-08-02T20:24:00-04:00');
+            
+            // Fast ends August 3, 2025 at 9:19 PM EST
+            const fastEnd = new Date('2025-08-03T21:19:00-04:00');
+            
+            const timeRemaining = fastEnd - now;
+            const totalFastDuration = fastEnd - fastStart;
+            const timeElapsed = now - fastStart;
+            
+            if (timeRemaining <= 0) {
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+                document.getElementById('progressText').textContent = '100% - Fast Complete!';
+                document.getElementById('progressFill').style.width = '100%';
+                return;
+            }
+            
+            const hours = Math.floor(timeRemaining / (1000 * 60 * 60));
+            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+            
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            
+            // Calculate progress percentage
+            const progressPercent = Math.max(0, Math.min(100, (timeElapsed / totalFastDuration) * 100));
+            document.getElementById('progressText').textContent = Math.round(progressPercent) + '% Complete';
+            document.getElementById('progressFill').style.width = progressPercent + '%';
+        }
+        
+        // Initialize
+        createFlames();
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
